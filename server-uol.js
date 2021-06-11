@@ -75,7 +75,6 @@ app.post('/status', (req, res) => {
             return p.name === username;
         }).lastStatus = Date.now();
     }
-    console.log(participants);
 });
 
 setInterval(() => {
@@ -88,8 +87,8 @@ setInterval(() => {
                 type: 'status',
                 time: `${dayjs().format('H:m:s')}`,
             });
-            participants.splice(i);
-            names.splice(i);
+            participants.splice(i, 1);
+            names.splice(i, 1);
         }
     });
 }, 15000);
