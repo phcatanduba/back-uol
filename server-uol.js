@@ -37,7 +37,11 @@ app.get('/participants', (req, res) => {
 });
 
 app.get('/messages', (req, res) => {
-    res.send(messages);
+    const limit = req.query.limit;
+    const filterMessages = messages.filter((m, i) => {
+        return m.to === 'Todos' || m.to === req.headers.user;
+    });
+    res.send(filterMessages.slice(-limit));
 });
 
 app.post('/messages', (req, res) => {
