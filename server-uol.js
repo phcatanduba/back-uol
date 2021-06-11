@@ -61,6 +61,35 @@ app.post('/messages', (req, res) => {
     }
 });
 
+app.post('/status', (req, res) => {
+    const username = req.headers.user;
+    if (!names.includes(username)) {
+        res.sendStatus(400);
+    }
+    if (participants.length !== 0) {
+        participants.find((p, i) => {
+            return p.name === username;
+        }).lastStatus = Date.now();
+    }
+    console.log(participants);
+});
+
+setInterval(() => {
+    participants.forEach((p, i) => {
+        if (p.lastStatus < Date.now() - 10000) {
+            messages.push({
+                from: `${p.name}`,
+                to: 'Todos',
+                text: 'sai da sala...',
+                type: 'status',
+                time: `${dayjs().format('H:m:s')}`,
+            });
+            participants.splice(i);
+            names.splice(i);
+        }
+    });
+}, 15000);
+
 app.listen(4000, () => {
     console.log('rodando');
 });
